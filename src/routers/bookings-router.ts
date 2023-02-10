@@ -1,4 +1,4 @@
-import { createBooking, getBooking } from "@/controllers";
+import { changeBooking, createBooking, getBooking } from "@/controllers";
 import { authenticateToken, validateBody } from "@/middlewares";
 import { Router } from "express";
 
@@ -8,6 +8,6 @@ bookingRouter
     .all("/*", authenticateToken)
     .get("/", getBooking)
     .post("/", createBooking)
-    .put("/")
+    .put("/", changeBooking)
 
 export { bookingRouter }

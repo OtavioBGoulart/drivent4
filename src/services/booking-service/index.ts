@@ -1,4 +1,4 @@
-import { notFoundError } from "@/errors"
+import { notFoundError, invalidDataError } from "@/errors"
 import { bookingRepository } from "@/repositories/booking-repository"
 import { roomRepository } from "@/repositories/room-repository.ts";
 import hotelService from "../hotels-service";
@@ -31,7 +31,15 @@ async function createBooking(userId: number, roomId: number) {
     return
 }
 
+async function changeBooking(userId: number, roomId: number) {
+    await getUserBooking(userId);
+    await bookingValidations(userId, roomId);
+
+    return
+}
+
 export const bookingService = {
     getBooking,
-    createBooking
+    createBooking,
+    changeBooking
 }
