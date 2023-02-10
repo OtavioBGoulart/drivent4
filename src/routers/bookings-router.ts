@@ -1,3 +1,4 @@
+import { getBooking } from "@/controllers";
 import { authenticateToken } from "@/middlewares";
 import { Router } from "express";
 
@@ -5,6 +6,8 @@ const bookingRouter = Router();
 
 bookingRouter
     .all("/*", authenticateToken)
-    .get("/booking")
-    .post("/booking")
-    .put("/booking")
+    .get("/", getBooking)
+    .post("/")
+    .put("/")
+
+export { bookingRouter }

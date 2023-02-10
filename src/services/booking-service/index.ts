@@ -3,12 +3,16 @@ import { bookingRepository } from "@/repositories/booking-repository"
 
 
 async function getUserBooking(userId: number) {
-    const booking = await bookingRepository.getUserBooking(userId)
+    const booking = await bookingRepository.getUserBooking(userId);
 
-    if (!booking) throw notFoundError()
+    if (!booking) throw notFoundError();
+
+    return booking;
 }
 async function getBooking(userId: number) {
-    await
+    const booking = await getUserBooking(userId);
+
+    return booking;
 }
 
 export const bookingService = {
