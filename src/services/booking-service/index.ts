@@ -23,6 +23,11 @@ async function bookingValidations(userId: number, roomId: number) {
     const roomExist = await roomRepository.getRoomById(roomId)
     console.log(roomExist)
     if (!roomExist) throw notFoundError();
+    const bookings = await bookingRepository.getBookings(roomId)
+    console.log(bookings)
+    if(roomExist.capacity === bookings.length) {
+        throw forbidden();
+    }
 
 }
 
