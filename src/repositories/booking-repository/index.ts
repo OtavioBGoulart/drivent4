@@ -14,6 +14,17 @@ async function getUserBooking(userId: number) {
     })
 }
 
+async function getBookings(roomId: number) {
+
+    return prisma.booking.findMany({
+        where: {
+            roomId
+        },
+
+    })
+}
+
 export const bookingRepository = {
-    getUserBooking
+    getUserBooking,
+    getBookings
 }

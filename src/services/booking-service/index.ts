@@ -43,7 +43,7 @@ async function createBooking(userId: number, roomId: number) {
     return
 }
 
-async function changeBooking(userId: number, roomId: number) {
+async function changeBooking(userId: number, roomId: number, bookingId: number) {
     const booking = await bookingRepository.getUserBooking(userId);
 
     if (!booking) throw forbidden();
