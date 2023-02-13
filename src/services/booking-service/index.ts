@@ -1,20 +1,22 @@
-import { notFoundError, invalidDataError } from "@/errors"
+import { forbidden, notFoundError } from "@/errors"
 import { bookingRepository } from "@/repositories/booking-repository"
+import enrollmentRepository from "@/repositories/enrollment-repository";
 import { roomRepository } from "@/repositories/room-repository.ts";
-import hotelService from "../hotels-service";
+import ticketRepository from "@/repositories/ticket-repository";
 
 
-async function getUserBooking(userId: number) {
-    const booking = await bookingRepository.getUserBooking(userId);
+async function businessRules(userId: number) {
+    
+    const enrollment = await enrollmentRepository.findWithAddressByUserId(userId);
+    if (!enrollment) {
+        throw forbidden()
+    }
+    
+    const ticket = await ticketRepository.findTicketByEnrollmentId(enrollment.id);
 
-    if (!booking) throw notFoundError();
-
-    return booking;
-}
-async function getBooking(userId: number) {
-    const booking = await getUserBooking(userId);
-
-    return booking;
+    if (!ticket || ticket.status === "RESERVED" || ticket.TicketType.isRemote || !ticket.TicketType.includesHotel) {
+        throw forbidden();
+    }
 }
 
 async function bookingValidations(userId: number, roomId: number) {
@@ -24,15 +26,28 @@ async function bookingValidations(userId: number, roomId: number) {
 
 }
 
+async function getBooking(userId: number) {
+    const booking = await bookingRepository.getUserBooking(userId);
+
+    if (!booking) throw notFoundError();
+
+    return booking;
+}
+
+
+
 async function createBooking(userId: number, roomId: number) {
-    await hotelService.listHotels(userId);
+    await businessRules(userId)
     await bookingValidations(userId, roomId);
 
     return
 }
 
 async function changeBooking(userId: number, roomId: number) {
-    await getUserBooking(userId);
+    const booking = await bookingRepository.getUserBooking(userId);
+
+    if (!booking) throw forbidden();
+
     await bookingValidations(userId, roomId);
 
     return
