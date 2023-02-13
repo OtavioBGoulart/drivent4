@@ -24,7 +24,31 @@ async function getBookings(roomId: number) {
     })
 }
 
+export async function createBooking(userId: number, roomId: number) {
+
+    return prisma.booking.create({
+        data: {
+            userId,
+            roomId
+        }
+    })
+}
+
+export async function deleteBooking(bookingId: number, userId: number) {
+
+    return prisma.booking.deleteMany({
+        where: {
+            AND: [
+                { id: bookingId },
+                { userId: userId }
+            ]
+        }
+    })
+}
+
 export const bookingRepository = {
     getUserBooking,
-    getBookings
+    getBookings,
+    createBooking,
+    deleteBooking
 }

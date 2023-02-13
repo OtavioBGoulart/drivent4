@@ -30,7 +30,7 @@ export async function createBooking(req: AuthenticatedRequest, res: Response) {
         if (error.name === "NotFoundError") {
             return res.sendStatus(httpStatus.NOT_FOUND);
         }
-        if (error.name === "CannotListHotelsError") {
+        if (error.name === "Forbidden") {
             return res.sendStatus(httpStatus.FORBIDDEN);
         }
         return res.sendStatus(httpStatus.BAD_REQUEST);
@@ -51,7 +51,7 @@ export async function changeBooking(req: AuthenticatedRequest, res: Response) {
         if (error.name === "NotFoundError") {
             return res.sendStatus(httpStatus.NOT_FOUND);
         }
-        if (error.name === "CannotListHotelsError") {
+        if (error.name === "Forbidden") {
             return res.sendStatus(httpStatus.FORBIDDEN);
         }
         return res.sendStatus(httpStatus.BAD_REQUEST);
