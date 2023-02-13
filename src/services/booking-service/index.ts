@@ -42,9 +42,9 @@ async function getBooking(userId: number) {
 async function createBooking(userId: number, roomId: number) {
     await businessRules(userId)
     await bookingValidations(userId, roomId);
-    await bookingRepository.createBooking(userId, roomId);
+    const booking = await bookingRepository.createBooking(userId, roomId);
 
-    return
+    return booking.id
 }
 
 async function changeBooking(userId: number, roomId: number, bookingId: number) {
