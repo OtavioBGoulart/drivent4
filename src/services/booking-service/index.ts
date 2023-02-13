@@ -55,9 +55,9 @@ async function changeBooking(userId: number, roomId: number, bookingId: number) 
     const delet =  await bookingRepository.deleteBooking(bookingId, userId)
     console.log("delete",delet)
     if (delet.count === 0) throw notFoundError();
-    await bookingRepository.createBooking(userId, roomId);
+    const newBooking = await bookingRepository.createBooking(userId, roomId);
 
-    return
+    return newBooking.id
 }
 
 export const bookingService = {
